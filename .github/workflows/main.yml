@@ -47,7 +47,7 @@ jobs:
       - name: Upload report to Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./result
+          path: ./public
 
   deploy:
     needs: test
