@@ -1,37 +1,31 @@
 name: Run Postman Tests
 
-# Dispara o workflow em pushs e PRs para a branch main
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-  # Permite rodar manualmente pela aba "Actions"
   workflow_dispatch:
 
 jobs:
-  build:
-    # Runner: máquina Linux que vai executar o job
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repo para dentro do runner
+      # Step 1: Checkout repo
       - uses: actions/checkout@v4
 
-      # Step 2: Instala Newman + Reporter HTML Extra
+      # Step 2: Instala Newman e Reporter
       - name: Install Newman and Reporter
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-      # Step 3: Executa a coleção Postman e gera relatório com timestamp
+      # Step 3: Executa coleção e gera relatório com timestamp
       - name: Run Postman Collection
         run: |
-          # Cria pasta para salvar relatório
           mkdir -p result
-          # Gera timestamp no formato YYYY-MM-DD_HH-MM-SS
           timestamp=$(date +'%Y-%m-%d_%H-%M-%S')
-          # Executa testes com global, environment e salva HTML com timestamp no nome
           newman run ./user.json \
             -g ./global.json \
             -e ./postman.json \
@@ -39,10 +33,22 @@ jobs:
             --reporters cli,htmlextra \
             --reporter-htmlextra-export ./result/Report-${timestamp}.html
 
-      # Step 4: Publica o relatório como artifact no GitHub Actions
-      - name: Upload HTML Report
-        uses: actions/upload-artifact@v4
+      # Step 4: Publica relatórios no Pages
+      - name: Upload report to Pages
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: newman-report
-          path: ./result/*.html   # pega qualquer report gerado
-          retention-days: 7       # mantém relatório por 7 dias
+          path: ./result
+
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write      # necessário para publicar no Pages
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
