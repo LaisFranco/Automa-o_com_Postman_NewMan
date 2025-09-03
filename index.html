@@ -13,26 +13,7 @@
 </head>
 <body>
   <h1>Automação de Testes - Postman + Newman + GitHub Actions</h1>
-  <p style="text-align:center;">Clique em um relatório abaixo para visualizar:</p>
-
-  <!-- Botões para trocar relatório -->
-  <div class="relatorios">
-    <button onclick="carregarRelatorio('Report-2025-09-01_10-30.html')">01/09/2025</button>
-    <button onclick="carregarRelatorio('Report-2025-08-31_19-20.html')">31/08/2025</button>
-    <button onclick="carregarRelatorio('Report-2025-08-30_14-45.html')">30/08/2025</button>
-    <button onclick="carregarRelatorio('Report-2025-08-29_09-10.html')">29/08/2025</button>
-    <button onclick="carregarRelatorio('Report-2025-08-28_16-00.html')">28/08/2025</button>
-    <button onclick="carregarRelatorio('Report-2025-08-27_20-15.html')">27/08/2025</button>
-    <button onclick="carregarRelatorio('Report-2025-08-26_11-05.html')">26/08/2025</button>
-  </div>
-
-  <!-- Relatório embedado -->
-  <iframe id="viewer" src="reports/Report-2025-09-01_10-30.html"></iframe>
-
-  <script>
-    function carregarRelatorio(arquivo) {
-      document.getElementById('viewer').src = "reports/" + arquivo;
-    }
-  </script>
+ <p>📊 Último relatório gerado:</p>
+  <iframe src="Report.html"></iframe>
 </body>
 </html>
