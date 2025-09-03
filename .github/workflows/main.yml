@@ -37,8 +37,9 @@ jobs:
       - name: Prepare Pages content
         run: |
           mkdir -p ./public
-          # Copia o relatório mais recente para a pasta public
-          cp ./result/Report-${timestamp}.html ./public/Report.html
+          # Pega o último relatório gerado
+          latest_report=$(ls -t ./result/Report-*.html | head -n1)
+          cp "$latest_report" ./public/Report.html
           # Copia também a página inicial personalizada
           cp ./index.html ./public/index.html
 
