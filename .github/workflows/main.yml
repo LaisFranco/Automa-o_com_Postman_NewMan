@@ -1,41 +1,48 @@
 name: Run Postman Tests
 
+# Dispara o workflow em pushs e PRs para a branch main
 on:
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  # Permite rodar manualmente pela aba "Actions"
   workflow_dispatch:
 
 jobs:
   build:
+    # Runner: máquina Linux que vai executar o job
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repo
+      # Step 1: Checkout repo para dentro do runner
       - uses: actions/checkout@v4
 
-      # Step 2: Install Node + Newman + Reporter
+      # Step 2: Instala Newman + Reporter HTML Extra
       - name: Install Newman and Reporter
         run: |
           npm install -g newman
           npm install -g newman-reporter-htmlextra
 
-      # Step 3: Run collection
+      # Step 3: Executa a coleção Postman e gera relatório com timestamp
       - name: Run Postman Collection
         run: |
+          # Cria pasta para salvar relatório
           mkdir -p result
+          # Gera timestamp no formato YYYY-MM-DD_HH-MM-SS
+          timestamp=$(date +'%Y-%m-%d_%H-%M-%S')
+          # Executa testes com global, environment e salva HTML com timestamp no nome
           newman run ./user.json \
             -g ./global.json \
             -e ./postman.json \
             --delay-request 1 \
             --reporters cli,htmlextra \
-            --reporter-htmlextra-export ./result/Report.html
+            --reporter-htmlextra-export ./result/Report-${timestamp}.html
 
-      # Step 4: Upload report artifact
+      # Step 4: Publica o relatório como artifact no GitHub Actions
       - name: Upload HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: newman-report
-          path: ./result/Report.html
-          retention-days: 7  # mantém relatório por 7 dias
+          path: ./result/*.html   # pega qualquer report gerado
+          retention-days: 7       # mantém relatório por 7 dias
