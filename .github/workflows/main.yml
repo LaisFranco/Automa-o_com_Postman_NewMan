@@ -32,8 +32,17 @@ jobs:
             --delay-request 1 \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export ./result/Report-${timestamp}.html
+            
+       # Step 4: Prepara conteúdo para publicação no GitHub Pages
+      - name: Prepare Pages content
+        run: |
+          mkdir -p ./public
+          # Copia o relatório mais recente para a pasta public
+          cp ./result/Report-${timestamp}.html ./public/Report.html
+          # Copia também a página inicial personalizada
+          cp ./index.html ./public/index.html
 
-      # Step 4: Publica relatórios no Pages
+      # Step 5: Publica relatórios e index no GitHubPages
       - name: Upload report to Pages
         uses: actions/upload-pages-artifact@v3
         with:
