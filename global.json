@@ -1,0 +1,22 @@
+{
+	"id": "6a4f45e4-56f7-4869-8629-0214b2268eec",
+	"values": [
+		{
+			"key": "Password",
+			"value": "1234@lais",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "NewPassword",
+			"value": "1234@Test",
+			"type": "default",
+			"description": "",
+			"enabled": true
+		}
+	],
+	"name": "Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2025-09-03T18:56:17.233Z",
+	"_postman_exported_using": "Postman/11.61.0"
+}

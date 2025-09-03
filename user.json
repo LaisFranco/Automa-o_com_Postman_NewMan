@@ -1,0 +1,931 @@
+{
+	"info": {
+		"_postman_id": "c4fa2a32-2499-4992-8d5d-612005a77664",
+		"name": "User2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4814219",
+		"_collection_link": "https://lunar-capsule-285942.postman.co/workspace/QACoders(Lais)~bf425b9c-3235-4888-9f24-295af73a2ad0/collection/4814219-c4fa2a32-2499-4992-8d5d-612005a77664?action=share&source=collection_link&creator=4814219"
+	},
+	"item": [
+		{
+			"name": "Depends",
+			"item": [
+				{
+					"name": "https://api-automacao.qacoders.dev.br/api/login/",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"",
+									"// só salva se realmente existir token",
+									"if (jsonData.token) {",
+									"    pm.environment.set(\"authToken\", jsonData.token);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"mail\": \"sysadmin@qacoders.com\",\n  \"password\": \"1234@Test\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/login/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"login",
+								""
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-automacao.qacoders.dev.br/api/login/' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"mail\": \"sysadmin@qacoders.com\",\n  \"password\": \"1234@Test\"\n}'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Happy Path",
+			"item": [
+				{
+					"name": "User Count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"",
+									"pm.test(\"Status is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"pm.test(\"Response has msg property\", function () {",
+									"    pm.expect(responseData).to.have.property(\"count\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/count",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"count"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-automacao.qacoders.dev.br/api/user/count' \\\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "User Create",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"function firstName() {",
+									"",
+									"",
+									"    let firstName = [\"Lais\", \"Maria\", \"Joao\", \"José\", \"Levi\", \"Natan\", \"Alice\", \"Daniele\", \"Leticia\", \"Lucia\", \"Luiz\"]",
+									"",
+									"    let randomItem = firstName[Math.floor(Math.random() * firstName.length)]",
+									"",
+									"    return randomItem",
+									"}",
+									"",
+									"pm.environment.set(\"FirstName\",firstName());",
+									"",
+									"function lastName() {",
+									"",
+									"",
+									"    let lastName = [\"Oliveira\", \"Costa\", \"Silva\", \"Pereira\", \"Alburquece\", \"Franco\", \"Rodrigues\"]",
+									"",
+									"    let randomItem = lastName[Math.floor(Math.random() * lastName.length)]",
+									"",
+									"    return randomItem",
+									"}",
+									"",
+									"pm.environment.set(\"LastName\",lastName());",
+									"",
+									"pm.environment.set(\"FullName\",pm.environment.get(\"FirstName\") + \" \" + pm.environment.get(\"LastName\"));",
+									"",
+									"",
+									"",
+									"",
+									"",
+									"function providerMail() {",
+									"",
+									"",
+									"    let providerMail = [\"@yahoo.com.br\", \"@gmail.com\", \"@hotmail.com\", \"@uol.com\", \"@icloud.com\"]",
+									"",
+									"    let randomItem = providerMail[Math.floor(Math.random() * providerMail.length)]",
+									"",
+									"    return randomItem",
+									"}",
+									"",
+									"pm.environment.set(\"ProviderMail\",providerMail());",
+									"",
+									"pm.environment.set(\"Mail\", pm.environment.get(\"FirstName\") + \"_\" + pm.variables.replaceIn('{{$guid}}')+ pm.environment.get(\"ProviderMail\"))",
+									"",
+									"",
+									"function gerarCPF() {",
+									"  function random(n) {",
+									"    return Math.floor(Math.random() * n);",
+									"  }",
+									"",
+									"  let n = [];",
+									"  for (let i = 0; i < 9; i++) {",
+									"    n.push(random(10));",
+									"  }",
+									"",
+									"  // Calcula primeiro dígito verificador",
+									"  let d1 = 0;",
+									"  for (let i = 0; i < 9; i++) {",
+									"    d1 += n[i] * (10 - i);",
+									"  }",
+									"  d1 = 11 - (d1 % 11);",
+									"  if (d1 >= 10) d1 = 0;",
+									"",
+									"  // Calcula segundo dígito verificador",
+									"  let d2 = 0;",
+									"  for (let i = 0; i < 9; i++) {",
+									"    d2 += n[i] * (11 - i);",
+									"  }",
+									"  d2 += d1 * 2;",
+									"  d2 = 11 - (d2 % 11);",
+									"  if (d2 >= 10) d2 = 0;",
+									"",
+									"  return n.join('') + d1.toString() + d2.toString();",
+									"}",
+									"pm.environment.set(\"CPF\",gerarCPF());",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 201\", function() {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Check if ID is not empty\", function() {",
+									"    pm.expect(pm.response.json().user._id).to.not.be.empty;",
+									"    pm.environment.set(\"UserId\", pm.response.json().user._id);",
+									"});",
+									"",
+									"pm.test(\"Check if FullName is true\", function() {",
+									"    pm.expect(pm.response.json().user.fullName).to.eql(pm.environment.get(\"FullName\"));",
+									"});",
+									"",
+									"pm.test(\"Check if Mail is true\", function() {",
+									"    pm.expect(pm.response.json().user.mail).to.eql(pm.environment.get(\"Mail\"));",
+									"});",
+									"",
+									"pm.test(\"Check if Access Profile is not empty\", function() {",
+									"    pm.expect(pm.response.json().user.accessProfile).to.not.be.empty;",
+									"});",
+									"",
+									"pm.test(\"Check if CPF is true\", function() {",
+									"    pm.expect(pm.response.json().user.cpf).to.eql(pm.environment.get(\"CPF\"));",
+									"});",
+									"",
+									"pm.test(\"Check if Status is true\", function() {",
+									"    pm.expect(pm.response.json().user.status).to.eql(true);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"{{FullName}}\",\n    \"mail\": \"{{Mail}}\",\n    \"accessProfile\": \"ADMIN\",\n    \"cpf\": \"{{CPF}}\",\n    \"password\": \"{{Password}}\",\n    \"confirmPassword\": \"{{Password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-automacao.qacoders.dev.br/api/user/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODVjNzhkZmYyZTViZGY1NzcwNmRhYzgiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRWek5ZZ20zZEJBTzRXLlRsZC4xZlYuY3Y4MDlkYUNtclVjYXIuWWJwUVJZZm01aENUaVF3NiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoicXVhcnRhLWZlaXJhLCAyNS8wNi8yMDI1LCAxOTozMTo1OCBCUlQiLCJyZWdpc3RyYXRpb25OdW1iZXIiOiIwMSIsImNvbXBhbnlJZCI6IlFhLkNvZGVycyIsIl9pZCI6IjY4NWM3OGRmZjJlNWJkZjU3NzA2ZGFjOSJ9XSwiX192IjowLCJpYXQiOjE3NTY1NzE1MjcsImV4cCI6MTc1NjY1NzkyN30.T9x9-uhQN611COkEmF1R3bl8gPZxEMxjRpR7PjG3prs' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"fullName\": \"Teste do Lais\",\n  \"mail\": \"lais12@test.com.br\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": \"10199887760\",\n  \"password\": \"1234@lais\",\n  \"confirmPassword\": \"1234@lais\"\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "User List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"",
+									"pm.test(\"Status is 200\", function() {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response is a non-empty array\", function () {",
+									"    pm.expect(Array.isArray(responseData)).to.be.true;",
+									"    pm.expect(responseData.length).to.be.above(0);",
+									"});",
+									"",
+									"pm.test(\"First item has _id property\", function () {",
+									"    pm.expect(responseData[0]).to.have.property(\"_id\");",
+									"});",
+									"",
+									"responseData.forEach((user, index) => {",
+									"    pm.test(`User at index ${index} has required properties`, function () {",
+									"        pm.expect(user).to.have.property(\"_id\");",
+									"        pm.expect(user).to.have.property(\"fullName\");",
+									"        pm.expect(user).to.have.property(\"mail\");",
+									"        pm.expect(user).to.have.property(\"accessProfile\");",
+									"        pm.expect(user).to.have.property(\"status\");",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-automacao.qacoders.dev.br/api/user/' \\\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "User Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"",
+									"// pega o ID que foi enviado na URL (variável do Postman)",
+									"let requestedUserId = pm.variables.get(\"UserId\");",
+									"let requestedFullName = pm.variables.get(\"FullName\");",
+									"",
+									"pm.test(\"Status is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has _id and matches requested UserId\", function () {",
+									"    pm.expect(responseData).to.have.property(\"_id\");",
+									"    pm.expect(responseData._id).to.eql(requestedUserId);",
+									"});",
+									"",
+									"pm.test(\"Response has FullName and matches requested FullName\", function () {",
+									"    pm.expect(responseData).to.have.property(\"fullName\");",
+									"    pm.expect(responseData.fullName).to.eql(requestedFullName);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/{{UserId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{UserId}}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'GET' \\\n  'https://api-automacao.qacoders.dev.br/api/user/2' \\\n  -H 'accept: application/json'"
+					},
+					"response": []
+				},
+				{
+					"name": "User status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"let requestedUserId = pm.environment.get(\"UserId\");",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"     pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"UserId exists in environment\", function () {",
+									"    pm.expect(pm.environment.get(\"UserId\")).to.not.be.empty;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has msg property\", function () {",
+									"    pm.expect(responseData).to.have.property(\"msg\");",
+									"});",
+									"",
+									"pm.test(\"Message contains success text\", function () {",
+									"    pm.expect(responseData.msg).to.include(\"Status do usuario atualizado com sucesso para status true.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": true\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/status/{{UserId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"status",
+								"{{UserId}}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'PUT' \\\n  'https://api-automacao.qacoders.dev.br/api/user/status/1' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"status\": true\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "User Delete ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let responseData = pm.response.json();",
+									"let requestedUserId = pm.environment.get(\"UserId\");",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"     pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response has msg property\", function () {",
+									"    pm.expect(responseData).to.have.property(\"msg\");",
+									"});",
+									"",
+									"pm.test(\"Message contains success text\", function () {",
+									"    pm.expect(responseData.msg).to.include(\"Usuário deletado com sucesso!.\");",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{url}}/user/{{UserId}}",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								"{{UserId}}"
+							]
+						},
+						"description": "Generated from cURL: curl -X 'DELETE' \\\n  'https://api-automacao.qacoders.dev.br/api/user/1' \\\n  -H 'accept: application/json'"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Exception",
+			"item": [
+				{
+					"name": "User Create empty",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"/// Parse response body",
+									"let responseData = pm.response.json();",
+									"",
+									"// Generic function to validate if all expected errors are present",
+									"function validateErrors(expectedErrors, receivedErrors) {",
+									"    expectedErrors.forEach(function(errorMsg) {",
+									"        pm.test(\"Validate error: \" + errorMsg, function () {",
+									"            pm.expect(receivedErrors).to.include(errorMsg);",
+									"        });",
+									"    });",
+									"}",
+									"",
+									"// List of expected error messages",
+									"let expectedErrors = [",
+									"    \"O campo nome completo é obrigatório.\",",
+									"    \"O campo e-mail é obrigatório.\",",
+									"    \"O campo senha é obrigatório\",",
+									"    \"O campo CPF é obrigatório!\",",
+									"    \"O campo perfil de acesso é obrigatório.\",",
+									"    \"O campo de confirmação de senha é obrigatório.\"",
+									"];",
+									"",
+									"// Call the validation function",
+									"validateErrors(expectedErrors, responseData.error);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "{{authToken}}",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"\",\n    \"mail\": \"\",\n    \"accessProfile\": \"\",\n    \"cpf\": \"\",\n    \"password\": \"\",\n    \"confirmPassword\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								""
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-automacao.qacoders.dev.br/api/user/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODVjNzhkZmYyZTViZGY1NzcwNmRhYzgiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRWek5ZZ20zZEJBTzRXLlRsZC4xZlYuY3Y4MDlkYUNtclVjYXIuWWJwUVJZZm01aENUaVF3NiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoicXVhcnRhLWZlaXJhLCAyNS8wNi8yMDI1LCAxOTozMTo1OCBCUlQiLCJyZWdpc3RyYXRpb25OdW1iZXIiOiIwMSIsImNvbXBhbnlJZCI6IlFhLkNvZGVycyIsIl9pZCI6IjY4NWM3OGRmZjJlNWJkZjU3NzA2ZGFjOSJ9XSwiX192IjowLCJpYXQiOjE3NTY1NzE1MjcsImV4cCI6MTc1NjY1NzkyN30.T9x9-uhQN611COkEmF1R3bl8gPZxEMxjRpR7PjG3prs' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"fullName\": \"Teste do Lais\",\n  \"mail\": \"lais12@test.com.br\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": \"10199887760\",\n  \"password\": \"1234@lais\",\n  \"confirmPassword\": \"1234@lais\"\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "User Create first name only",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"/// Parse response body",
+									"let responseData = pm.response.json();",
+									"",
+									"// Generic function to validate if all expected errors are present",
+									"function validateErrors(expectedErrors, receivedErrors) {",
+									"    expectedErrors.forEach(function(errorMsg) {",
+									"        pm.test(\"Validate error: \" + errorMsg, function () {",
+									"            pm.expect(receivedErrors).to.include(errorMsg);",
+									"        });",
+									"    });",
+									"}",
+									"",
+									"// List of expected error messages",
+									"let expectedErrors = [",
+									"    \"Informe o nome e sobrenome com as iniciais em letra maiúscula e sem caracteres especiais.\",",
+									"        \"O campo e-mail é obrigatório.\",",
+									"        \"O campo senha é obrigatório\",",
+									"        \"O campo CPF é obrigatório!\",",
+									"        \"O campo perfil de acesso é obrigatório.\",",
+									"        \"O campo de confirmação de senha é obrigatório.\"",
+									"    ];",
+									"// Call the validation function",
+									"validateErrors(expectedErrors, responseData.error);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "{{authToken}}",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Lais\",\n    \"mail\": \"\",\n    \"accessProfile\": \"\",\n    \"cpf\": \"\",\n    \"password\": \"\",\n    \"confirmPassword\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								""
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-automacao.qacoders.dev.br/api/user/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODVjNzhkZmYyZTViZGY1NzcwNmRhYzgiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRWek5ZZ20zZEJBTzRXLlRsZC4xZlYuY3Y4MDlkYUNtclVjYXIuWWJwUVJZZm01aENUaVF3NiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoicXVhcnRhLWZlaXJhLCAyNS8wNi8yMDI1LCAxOTozMTo1OCBCUlQiLCJyZWdpc3RyYXRpb25OdW1iZXIiOiIwMSIsImNvbXBhbnlJZCI6IlFhLkNvZGVycyIsIl9pZCI6IjY4NWM3OGRmZjJlNWJkZjU3NzA2ZGFjOSJ9XSwiX192IjowLCJpYXQiOjE3NTY1NzE1MjcsImV4cCI6MTc1NjY1NzkyN30.T9x9-uhQN611COkEmF1R3bl8gPZxEMxjRpR7PjG3prs' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"fullName\": \"Teste do Lais\",\n  \"mail\": \"lais12@test.com.br\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": \"10199887760\",\n  \"password\": \"1234@lais\",\n  \"confirmPassword\": \"1234@lais\"\n}'"
+					},
+					"response": []
+				},
+				{
+					"name": "User Create full name only",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"",
+									"pm.test(\"Status code is 400\", function() {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"/// Parse response body",
+									"let responseData = pm.response.json();",
+									"",
+									"// Generic function to validate if all expected errors are present",
+									"function validateErrors(expectedErrors, receivedErrors) {",
+									"    expectedErrors.forEach(function(errorMsg) {",
+									"        pm.test(\"Validate error: \" + errorMsg, function () {",
+									"            pm.expect(receivedErrors).to.include(errorMsg);",
+									"        });",
+									"    });",
+									"}",
+									"",
+									"// List of expected error messages",
+									"let expectedErrors = [",
+									"    \"O campo e-mail é obrigatório.\",",
+									"    \"O campo senha é obrigatório\",",
+									"    \"O campo CPF é obrigatório!\",",
+									"    \"O campo perfil de acesso é obrigatório.\",",
+									"    \"O campo de confirmação de senha é obrigatório.\"",
+									"];",
+									"",
+									"// Call the validation function",
+									"validateErrors(expectedErrors, responseData.error);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "apikey",
+							"apikey": [
+								{
+									"key": "key",
+									"value": "Authorization",
+									"type": "string"
+								},
+								{
+									"key": "value",
+									"value": "{{authToken}}",
+									"type": "string"
+								},
+								{
+									"key": "in",
+									"type": "any"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Lais Oliveira\",\n    \"mail\": \"\",\n    \"accessProfile\": \"\",\n    \"cpf\": \"\",\n    \"password\": \"\",\n    \"confirmPassword\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/user/",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"user",
+								""
+							]
+						},
+						"description": "Generated from cURL: curl -X 'POST' \\\n  'https://api-automacao.qacoders.dev.br/api/user/?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2ODVjNzhkZmYyZTViZGY1NzcwNmRhYzgiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRWek5ZZ20zZEJBTzRXLlRsZC4xZlYuY3Y4MDlkYUNtclVjYXIuWWJwUVJZZm01aENUaVF3NiIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoicXVhcnRhLWZlaXJhLCAyNS8wNi8yMDI1LCAxOTozMTo1OCBCUlQiLCJyZWdpc3RyYXRpb25OdW1iZXIiOiIwMSIsImNvbXBhbnlJZCI6IlFhLkNvZGVycyIsIl9pZCI6IjY4NWM3OGRmZjJlNWJkZjU3NzA2ZGFjOSJ9XSwiX192IjowLCJpYXQiOjE3NTY1NzE1MjcsImV4cCI6MTc1NjY1NzkyN30.T9x9-uhQN611COkEmF1R3bl8gPZxEMxjRpR7PjG3prs' \\\n  -H 'accept: application/json' \\\n  -H 'Content-Type: application/json' \\\n  -d '{\n  \"fullName\": \"Teste do Lais\",\n  \"mail\": \"lais12@test.com.br\",\n  \"accessProfile\": \"ADMIN\",\n  \"cpf\": \"10199887760\",\n  \"password\": \"1234@lais\",\n  \"confirmPassword\": \"1234@lais\"\n}'"
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "value",
+				"value": "{{authToken}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "Authorization",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

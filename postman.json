@@ -1,0 +1,67 @@
+{
+	"id": "3a6259c4-51cf-4bab-b89d-d14ab8318b18",
+	"name": "Postman",
+	"values": [
+		{
+			"key": "url",
+			"value": "https://api-automacao.qacoders.dev.br/api",
+			"type": "default",
+			"description": {
+				"content": "",
+				"type": "text/plain"
+			},
+			"enabled": true
+		},
+		{
+			"key": "authToken",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2OGI4NTIwOTkzZTg0MTYxY2ViNDRkNGIiLCJmdWxsTmFtZSI6IlFhLUNvZGVycy1TWVNBRE1JTiIsIm1haWwiOiJzeXNhZG1pbkBxYWNvZGVycy5jb20iLCJwYXNzd29yZCI6IiQyYiQxMCRtTXZqT0NaalpZazZ6YXl4UkFKRkkuLnVNYTVuc2RhdHlRMFZNemZKOW5NakI1UVJhcFBweSIsImFjY2Vzc1Byb2ZpbGUiOiJTWVNBRE1JTiIsImNwZiI6IjExMTExMTExMTExIiwic3RhdHVzIjp0cnVlLCJhdWRpdCI6W3sicmVnaXN0ZXJlZEJ5Ijp7InVzZXJJZCI6IjExMTExMTExMTExMTExMTExMSIsInVzZXJMb2dpbiI6InN5c2FkbWluQHFhY29kZXJzLmNvbSJ9LCJyZWdpc3RyYXRpb25EYXRlIjoicXVhcnRhLWZlaXJhLCAwMy8wOS8yMDI1LCAxMTozNDo0OCBCUlQiLCJyZWdpc3RyYXRpb25OdW1iZXIiOiIwMSIsImNvbXBhbnlJZCI6IlFhLkNvZGVycyIsIl9pZCI6IjY4Yjg1MjA5OTNlODQxNjFjZWI0NGQ0YyJ9XSwiX192IjowLCJpYXQiOjE3NTY5MjM4MDIsImV4cCI6MTc1NzAxMDIwMn0.9BAay-A3x151Nd6MQ4qMTLJNH95VhUFKZzqpigtUkbI",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "FirstName",
+			"value": "Maria",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "LastName",
+			"value": "Costa",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "FullName",
+			"value": "Maria Costa",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "ProviderMail",
+			"value": "@icloud.com",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "Mail",
+			"value": "Maria_99198a0b-5714-4054-ac6e-490cf5687b6c@icloud.com",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "CPF",
+			"value": "90045360510",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "UserId",
+			"value": "68b888054a475d96e3e82cf8",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-09-03T18:56:10.596Z",
+	"_postman_exported_using": "Postman/11.61.0"
+}
